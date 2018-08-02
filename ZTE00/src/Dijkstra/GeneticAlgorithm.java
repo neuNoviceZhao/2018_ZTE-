@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
  */
 import java.util.*;
 public  class GeneticAlgorithm {
-	private List<Chromosome> population = new ArrayList<Chromosome>();//��Ⱥ
+	private List<Chromosome> population = new ArrayList<Chromosome>();
 	private int popSize = 50;
 	private int iterationNum = 500;
 	private double mutationRate ;
@@ -80,7 +80,7 @@ public  class GeneticAlgorithm {
 			int hamDis = hammingDis(c1.getGene(), c2.getGene());
 			double hamD = (double)hamDis/1000;
 
-			crossoverRate = hamD;
+			crossoverRate = hamD;//交叉概率为汉明距离，汉明距离越近，相似度越高，交叉概率越小
 			
 //				double score = Math.min(c1.getRouteAndBestUseage().get(2), c2.getRouteAndBestUseage().get(2));
 //				if(score < averageScore){
@@ -165,7 +165,7 @@ public  class GeneticAlgorithm {
 			}
 		}
 	}
-	
+//求汉明距离，即两个个体对应位置编码不同的个数
    private int hammingDis(int gene1[],int gene2[]){
 	   int hamDis = 0;
 	   for (int i = 0; i < 1000; i++) {
@@ -186,13 +186,13 @@ public  class GeneticAlgorithm {
 //	   return hamRevDis;
 //   }
 	
-   public String[] printResult(){
+   public String[] printResult(){//输出结果
 	   String []result = null ;
 	   result = new String[2001];
 	   result[0] = (int)(bestRouteAndUseage.get(0).doubleValue())+" "+(int)(bestRouteAndUseage.get(1).doubleValue())+" "+new DecimalFormat("0.00").format(bestRouteAndUseage.get(2)*100);
 	   for (int i = 1; i < 2000; i=i+2) {
 		result[i] = business.get(i/2).getBusinessId() + " " + business.get(i/2).getRequestBandwidth();
-	    result[i+1] = business.get(i/2).getRouteS().get(bestChro.getGene()[i/2]).toString();
+	        result[i+1] = business.get(i/2).getRouteS().get(bestChro.getGene()[i/2]).toString();
 	   }
 	   return result;
    }

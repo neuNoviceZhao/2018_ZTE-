@@ -18,30 +18,31 @@ public class Main {
 	private static int routeNum = 955;
 	private static int businessNum = 1000;
 	private static Map <Key,Edge> edge1 = new HashMap<Key,Edge>();
-	private static Map <Key,Edge> edge2 = new HashMap<Key,Edge>();
+	private static Map <Key,Edge> edge2 = new HashMap<Key,Edge>();//
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 		long t1 = System.currentTimeMillis();
 		String [] graAndReq = read("C:/Users/zyf/Desktop/grditopoAndRequest.txt", null);
-        dataProgress(graAndReq);
-        long t2 = System.currentTimeMillis();
-		System.out.println("dataP:"+(t2-t1));
+                dataProgress(graAndReq);
+                long t2 = System.currentTimeMillis();
+		System.out.println("dataP:"+(t2-t1));//处理读入数据的计时程序
 		GeneticAlgorithm ga = new GeneticAlgorithm(edge2, business);
 		ga.calculate();
 		String result [] = ga.printResult();
 		String select [] = ga.printSelect();
 		write("C:/Users/zyf/Desktop/result.txt", result, false);
 		write("C:/Users/zyf/Desktop/select.txt", select, false);
-        long t3 = System.currentTimeMillis();
-        System.out.println("Time:"+(t3-t2)/1000+"s");
+       		long t3 = System.currentTimeMillis();
+                System.out.println("Time:"+(t3-t2)/1000+"s");//整个求解计时程序
+		
 	}
 	
 	
-public static void dataProgress(String[] graAndReq){
-		
-		
+        public static void dataProgress(String[] graAndReq){//处理读入的文件
+	      
 		List<String[]> data = new LinkedList<String[]>();//存放数据集
 		String sp[];
 		for (int i = 0; i < graAndReq.length; i++) {
@@ -50,7 +51,7 @@ public static void dataProgress(String[] graAndReq){
 		}
 		
 		
-		for (int i = 0; i < routeNum; i++) {
+		for (int i = 0; i < routeNum; i++) {//存入边信息
 			int start = Integer.parseInt(data.get(i+1)[0]);
 			int end = Integer.parseInt(data.get(i+1)[1]);
 			Key k1 = new Key(start, end);
@@ -60,12 +61,11 @@ public static void dataProgress(String[] graAndReq){
 			
 			edge1.put(k1, e1);
 			edge1.put(k2, e2);
-
-		
 		}
 		
 		alternateRouteNum = Integer.parseInt(data.get(routeNum+1)[1]);
-        int idNum = 0;
+                int idNum = 0;
+	      
 		for (int i = routeNum+2; i < data.size(); i = i+alternateRouteNum+1) {
 			List<int[]> route = new ArrayList<int[]>();
 			List<StringBuilder> routeS = new ArrayList<StringBuilder>();
@@ -80,7 +80,6 @@ public static void dataProgress(String[] graAndReq){
 						s.append(r[k]);
 					}
 				}
-			   
 				routeS.add(s);
 				route.add(r);
 			}
@@ -138,43 +137,41 @@ public static void dataProgress(String[] graAndReq){
 	 * @param spec
 	 * @return
 	 */
-	public static String[] read(final String filePath, final Integer spec)
-    {   
-        File file = new File(filePath);
-        List<String> lines = new LinkedList<String>();
-        BufferedReader br = null;
-        FileReader fb = null;
-        try
-        {
-            fb = new FileReader(file);
-            br = new BufferedReader(fb);
+	public static String[] read(final String filePath, final Integer spec)  {   
+		File file = new File(filePath);
+		List<String> lines = new LinkedList<String>();
+		BufferedReader br = null;
+		FileReader fb = null;
+		try
+		{
+		    fb = new FileReader(file);
+		    br = new BufferedReader(fb);
 
-            String str = null;
-            int index = 0;
-            while (((spec == null) || index++ < spec) && (str = br.readLine()) != null)
-            {
-                lines.add(str);
-            }
+		    String str = null;
+		    int index = 0;
+		    while (((spec == null) || index++ < spec) && (str = br.readLine()) != null)
+		    {
+			lines.add(str);
+		    }
+		}
+		catch (IOException e)
+		{
+		    e.printStackTrace();
+		}
+		finally
+		{
+				try {
+					if(br != null)br.close();
+					if(fb != null)fb.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+		}
+		return lines.toArray(new String[lines.size()]);
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-			try {
-				if(br != null)br.close();
-				if(fb != null)fb.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-           
-        }
-        return lines.toArray(new String[lines.size()]);
-    }
 	
-	 public static int write(final String filePath, final String[] contents, final boolean append)
-	    {
+	 public static int write(final String filePath, final String[] contents, final boolean append){
 	        File file = new File(filePath);
 	        if (contents == null)
 	        {
@@ -217,5 +214,5 @@ public static void dataProgress(String[] graAndReq){
 	        }
 
 	        return 1;
-	    }
+	}
 }

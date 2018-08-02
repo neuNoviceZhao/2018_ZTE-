@@ -13,35 +13,36 @@ public class Chromosome implements Cloneable{
 	private  int gene[] ;
 	private  List<Double> routeAndBestUseage;//链路及其利用率
 	private static List<Integer> mutationIndex = new ArrayList<Integer>();//变异位置
-    public Chromosome(Map <Key,Edge> edges,List<Business> business) {
+	
+        public Chromosome(Map <Key,Edge> edges,List<Business> business) {
 		this.edges = edges;
 		this.gene = creatGene(businessNum);
 		this.business = business;
 		this.routeAndBestUseage = getScore();
 	}
    
-    private int [] creatGene(int size){
-    	int createGene[] = new int[size];
-    	for (int i = 0; i < size; i++) {
-			createGene[i] = (int)(Math.random()*3);
-		}
+        private int [] creatGene(int size){
+    	    int createGene[] = new int[size];
+    	    for (int i = 0; i < size; i++) {
+	 		createGene[i] = (int)(Math.random()*3);
+            }
 	    return createGene;
 	}
     
     
-	public  Chromosome clone(){
-		if(this == null || this.gene == null){
-			return null;
-		}
-		Chromosome copy = new Chromosome(edges,business);
-		
-		for (int i = 0; i < this.gene.length; i++) {
-			copy.gene[i] = this.gene[i];
-		}
-		copy.routeAndBestUseage.clear();
-		copy.routeAndBestUseage.addAll(this.routeAndBestUseage);
-		return copy;
-	}
+        public  Chromosome clone(){
+	        if(this == null || this.gene == null){
+	        	return null;
+	        }
+	        Chromosome copy = new Chromosome(edges,business);
+
+	        for (int i = 0; i < this.gene.length; i++) {
+	        	copy.gene[i] = this.gene[i];
+	        }
+	        copy.routeAndBestUseage.clear();
+	        copy.routeAndBestUseage.addAll(this.routeAndBestUseage);
+	        return copy;
+        }
 	
 	public  List<Chromosome> crossover(Chromosome chro1){
 		if(chro1 == null || this == null){
@@ -78,8 +79,8 @@ public class Chromosome implements Cloneable{
 	public void mutation(int num){
 		int range = 1000 / num;
 		//每次与上次变异位置不同
-        for (int i = 0; i < num; i++) {
-			int index = (int)( Math.random() * range) + range * i;//每一百个点
+		for (int i = 0; i < num; i++) {
+			int index = (int)( Math.random() * range) + range * i;//将1000个位置分成十份，每一份上一个变异点
 			//int index = (int)( Math.random() * 1000 );//每一百个点
 			if(mutationIndex.size() < num){
 				mutationIndex.add(index);
@@ -94,14 +95,15 @@ public class Chromosome implements Cloneable{
 			int number = (int)((3*Math.random()));
 			//int number = 2;
 			gene[index] = number;
-			
+
 		} 
-        if(mutationIndex.size() == 2*num){
-        	mutationIndex = new ArrayList<Integer>(mutationIndex.subList(num, 2*num));
-        }
-        this.setRouteAndBestUseage();
+		if(mutationIndex.size() == 2*num){
+			mutationIndex = new ArrayList<Integer>(mutationIndex.subList(num, 2*num));
+		}
+		this.setRouteAndBestUseage();//重置分数
 	}
 	
+	//算链路最大带宽占用率
 	public List<Double> getScore(){
        
 		for (int i = 0; i < businessNum; i++) {
@@ -114,7 +116,8 @@ public class Chromosome implements Cloneable{
 				edges.put(k, e);
 		    }
 		
-	   }
+	        }
+		
 		List <Double> maxRateRoute = new LinkedList<Double>(); 
 		maxRateRoute.add((double)0);
 		maxRateRoute.add((double)0);
@@ -159,7 +162,5 @@ public class Chromosome implements Cloneable{
 		}
 	}
 	
-    
-	
-	
+
 }
